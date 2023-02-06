@@ -12,7 +12,7 @@ protocol AddExpensesDelegate {
     func addExpenses(expenses: Expenses)
 }
 
-class NewExpensesVC: UIViewController {
+class NewExpensesVC: UIViewController  {
    
     var delegate: AddExpensesDelegate?
     
@@ -26,6 +26,8 @@ class NewExpensesVC: UIViewController {
         let textField = UITextField()
         textField.placeholder = "Введите название траты"
         textField.becomeFirstResponder()
+        textField.keyboardType = .default
+        textField.returnKeyType = .next
         textField.borderStyle = .bezel
         return textField
     }()
@@ -40,6 +42,8 @@ class NewExpensesVC: UIViewController {
         let textField = UITextField()
         textField.placeholder = "Введите стоимость"
         textField.borderStyle = .bezel
+        textField.keyboardType = .numbersAndPunctuation
+        textField.returnKeyType = .done
         return textField
     }()
     
@@ -75,6 +79,9 @@ class NewExpensesVC: UIViewController {
         
         view.addSubview(stack)
         
+        expensesTextField.delegate = self
+        coastTextField.delegate = self
+        
         stack.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(100)
             make.leading.equalToSuperview().offset(10)
@@ -82,4 +89,18 @@ class NewExpensesVC: UIViewController {
         }
     }
 
+}
+
+extension NewExpensesVC: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == expensesTextField {
+            coastTextField.becomeFirstResponder()
+        } else {
+            textField.resignFirstResponder()
+            doneBtnClick()
+        }
+        return true
+    }
+    
+    
 }
