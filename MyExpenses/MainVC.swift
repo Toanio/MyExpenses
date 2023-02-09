@@ -10,6 +10,7 @@ import UIKit
 struct Expenses {
     var name: String
     var coast: String
+    var color: String
 }
 
 private let reuseIdentifier = "cell"
@@ -43,6 +44,10 @@ class MainVC: UITableViewController {
         cell.nameLabel.text = expenses[indexPath.row]?.name
         cell.coastLabel.text = expenses[indexPath.row]?.coast
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(expenses[indexPath.row]?.color)
     }
 
 }
