@@ -34,17 +34,16 @@ enum TypeExpenses: Int, CaseIterable {
     }
 }
 
-class NewExpensesVC: UIViewController  {
-   
+class NewExpensesViewController: UIViewController  {
+    var showMenu = false
     var delegate: AddExpensesDelegate?
     
-    let mainLabel: UILabel = {
+    lazy var mainLabel: UILabel = {
         let label = UILabel()
         label.text = "Название расхода"
         return label
     }()
-    
-    let expensesTextField: UITextField = {
+    lazy var expensesTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Введите название траты"
         textField.becomeFirstResponder()
@@ -53,14 +52,12 @@ class NewExpensesVC: UIViewController  {
         textField.borderStyle = .bezel
         return textField
     }()
-    
-    let coastLabel: UILabel = {
+    lazy var coastLabel: UILabel = {
         let label = UILabel()
         label.text = "Стоимость"
         return label
     }()
-    
-    let coastTextField: UITextField = {
+    lazy var coastTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Введите стоимость"
         textField.borderStyle = .bezel
@@ -68,24 +65,20 @@ class NewExpensesVC: UIViewController  {
         textField.returnKeyType = .done
         return textField
     }()
-    
-    let datePicker: UIDatePicker = {
+    lazy var datePicker: UIDatePicker = {
         let picker = UIDatePicker()
         picker.preferredDatePickerStyle = .compact
         picker.datePickerMode = .date
         return picker
     }()
-    
-    let saveBtn: UIButton = {
+    lazy var typeButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = .darkGray
         button.addTarget(self, action: #selector(someMethod), for: .touchUpInside)
         button.setTitle("Выбор типа", for: .normal)
         return button
     }()
-    
-    var tableView: UITableView!
-    var showMenu = false
+    lazy var tableView: UITableView = UITableView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -101,24 +94,21 @@ class NewExpensesVC: UIViewController  {
     }
     
     //MARK: - Configures
+    
     private func configureTextFields() {
-        
+        expensesTextField.delegate = self
+        coastTextField.delegate = self
         let stack = UIStackView(arrangedSubviews: [
             mainLabel,
             expensesTextField,
             coastLabel,
             coastTextField,
             datePicker,
-            saveBtn,
+            typeButton,
         ])
         stack.axis = .vertical
         stack.spacing = 5
-        
         view.addSubview(stack)
-        
-        expensesTextField.delegate = self
-        coastTextField.delegate = self
-        
         stack.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(100)
             make.leading.equalToSuperview().offset(10)
@@ -126,27 +116,25 @@ class NewExpensesVC: UIViewController  {
         }
     }
     
-    func configureTableView()  {
-        tableView = UITableView()
+    private func configureTableView()  {
         tableView.delegate = self
         tableView.dataSource = self
-        
         view.addSubview(tableView)
-        
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(saveBtn).offset(31)
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview()
+            make.top.equalTo(typeButton).offset(31)
+            make.leading.equalToSuperview().offset(10)
+            make.trailing.equalToSuperview().offset(-10)
             make.height.equalTo(200)
         }
     }
     
     //MARK: - Actions
+    
     @objc func doneBtnClick() {
-        
-        guard let name = expensesTextField.text, expensesTextField.hasText else { return }
-        guard let coast = coastTextField.text, coastTextField.hasText else { return }
-        guard let color = saveBtn.titleLabel?.text else { return }
+        guard let name = expensesTextField.text, expensesTextField.hasText,
+              let coast = coastTextField.text, coastTextField.hasText,
+              let color = typeButton.titleLabel?.text
+        else { return }
         let expenses = Expenses(name: name, coast: coast, color: color)
         delegate?.addExpenses(expenses: expenses)
         navigationController?.popViewController(animated: true)
@@ -154,7 +142,6 @@ class NewExpensesVC: UIViewController  {
     
     @objc func someMethod() {
         showMenu = !showMenu
-        
         var indexPaths = [IndexPath]()
         
         TypeExpenses.allCases.forEach { (color) in
@@ -168,10 +155,9 @@ class NewExpensesVC: UIViewController  {
             tableView.deleteRows(at: indexPaths, with: .fade)
         }
     }
-
 }
 
-extension NewExpensesVC: UITextFieldDelegate {
+extension NewExpensesViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == expensesTextField {
             coastTextField.becomeFirstResponder()
@@ -181,27 +167,26 @@ extension NewExpensesVC: UITextFieldDelegate {
         }
         return true
     }
-    
-    
 }
 
-extension NewExpensesVC: UITableViewDelegate, UITableViewDataSource {
+extension NewExpensesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return showMenu ? TypeExpenses.allCases.count : 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = TypeExpenses(rawValue: indexPath.row)?.description
-        cell.backgroundColor = TypeExpenses(rawValue: indexPath.row)?.color
+        let expens = TypeExpenses(rawValue: indexPath.row)
+        cell.textLabel?.text = expens?.description
+        cell.backgroundColor = expens?.color
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        saveBtn.setTitle(TypeExpenses(rawValue: indexPath.row)?.description, for: .normal)
-        saveBtn.backgroundColor = TypeExpenses(rawValue: indexPath.row)?.color
+        let expens = TypeExpenses(rawValue: indexPath.row)
+        typeButton.setTitle(expens?.description, for: .normal)
+        typeButton.backgroundColor = expens?.color
         showMenu = false
-        
         var indexPaths = [IndexPath]()
 
         TypeExpenses.allCases.forEach { (color) in
@@ -210,6 +195,4 @@ extension NewExpensesVC: UITableViewDelegate, UITableViewDataSource {
         }
         tableView.deleteRows(at: indexPaths, with: .fade)
     }
-    
-    
 }

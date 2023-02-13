@@ -18,8 +18,8 @@ class ViewController: UITabBarController {
         
         
         viewControllers = [
-            createNavController(viewController: MainVC(), title: "Главная"),
-            createNavController(viewController: SettingsVC(), title: "Настройки")
+            createNavController(viewController: MainViewController(), title: "Главная"),
+            createNavController(viewController: SettingsViewController(), title: "Настройки")
         ]
        
     
