@@ -47,6 +47,8 @@ class NewExpensesViewController: UIViewController  {
         let textField = UITextField()
         textField.placeholder = "Введите название траты"
         textField.becomeFirstResponder()
+        textField.layer.masksToBounds = true
+        textField.layer.borderWidth = 2
         textField.keyboardType = .default
         textField.returnKeyType = .next
         textField.borderStyle = .bezel
@@ -61,7 +63,9 @@ class NewExpensesViewController: UIViewController  {
         let textField = UITextField()
         textField.placeholder = "Введите стоимость"
         textField.borderStyle = .bezel
-        textField.keyboardType = .numbersAndPunctuation
+        textField.layer.masksToBounds = true
+        textField.layer.borderWidth = 2
+        textField.keyboardType = .numberPad
         textField.returnKeyType = .done
         return textField
     }()
@@ -133,9 +137,14 @@ class NewExpensesViewController: UIViewController  {
     @objc func doneBtnClick() {
         guard let name = expensesTextField.text, expensesTextField.hasText,
               let coast = coastTextField.text, coastTextField.hasText,
-              let color = typeButton.titleLabel?.text
-        else { return }
-        let expenses = Expenses(name: name, coast: coast, color: color)
+              let color = typeButton.backgroundColor,
+              let description = typeButton.titleLabel?.text
+        else {
+            coastTextField.layer.borderColor = CGColor(red: 255, green: 0, blue: 0, alpha: 1)
+            expensesTextField.layer.borderColor = CGColor(red: 255, green: 0, blue: 0, alpha: 1)
+            return
+        }
+        let expenses = Expenses(name: name, coast: coast, type: description, color: color)
         delegate?.addExpenses(expenses: expenses)
         navigationController?.popViewController(animated: true)
     }
@@ -164,6 +173,14 @@ extension NewExpensesViewController: UITextFieldDelegate {
         } else {
             textField.resignFirstResponder()
             doneBtnClick()
+        }
+        return true
+    }
+    //Разобраться в реализации
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField == coastTextField {
+            let invalidCharacters = CharacterSet(charactersIn: "0123456789").inverted
+            return (string.rangeOfCharacter(from: invalidCharacters) == nil)
         }
         return true
     }

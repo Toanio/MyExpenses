@@ -17,6 +17,8 @@
 		B01062F429881AF800AA5DB4 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01062F329881AF800AA5DB4 /* MainViewController.swift */; };
 		B01062F629896DFF00AA5DB4 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01062F529896DFF00AA5DB4 /* SettingsViewController.swift */; };
 		B01062F8298AB06200AA5DB4 /* NewExpensesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01062F7298AB06200AA5DB4 /* NewExpensesViewController.swift */; };
+		B05F7419299BD9650035371D /* ExpensesDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05F7418299BD9650035371D /* ExpensesDetailViewController.swift */; };
+		B05F741B299E730E0035371D /* TotalExpensesFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05F741A299E730E0035371D /* TotalExpensesFooterView.swift */; };
 		B091CD342990E6A0004938B9 /* ExpensesViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B091CD332990E6A0004938B9 /* ExpensesViewCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -33,6 +35,8 @@
 		B01062F329881AF800AA5DB4 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		B01062F529896DFF00AA5DB4 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		B01062F7298AB06200AA5DB4 /* NewExpensesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewExpensesViewController.swift; sourceTree = "<group>"; };
+		B05F7418299BD9650035371D /* ExpensesDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesDetailViewController.swift; sourceTree = "<group>"; };
+		B05F741A299E730E0035371D /* TotalExpensesFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalExpensesFooterView.swift; sourceTree = "<group>"; };
 		B091CD332990E6A0004938B9 /* ExpensesViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesViewCell.swift; sourceTree = "<group>"; };
 		BDFA6384754E6FF3588ECF7F /* Pods_MyExpenses.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MyExpenses.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E30AFE6EEC1EFE33A9D8531C /* Pods-MyExpenses.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyExpenses.release.xcconfig"; path = "Target Support Files/Pods-MyExpenses/Pods-MyExpenses.release.xcconfig"; sourceTree = "<group>"; };
@@ -99,6 +103,8 @@
 				B01062F329881AF800AA5DB4 /* MainViewController.swift */,
 				B01062F7298AB06200AA5DB4 /* NewExpensesViewController.swift */,
 				B091CD332990E6A0004938B9 /* ExpensesViewCell.swift */,
+				B05F7418299BD9650035371D /* ExpensesDetailViewController.swift */,
+				B05F741A299E730E0035371D /* TotalExpensesFooterView.swift */,
 			);
 			path = MyExpenses;
 			sourceTree = "<group>";
@@ -218,10 +224,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				B01062E72988031900AA5DB4 /* MyExpenses.xcdatamodeld in Sources */,
+				B05F741B299E730E0035371D /* TotalExpensesFooterView.swift in Sources */,
 				B01062F8298AB06200AA5DB4 /* NewExpensesViewController.swift in Sources */,
 				B01062E12988031800AA5DB4 /* ViewController.swift in Sources */,
 				B01062DD2988031800AA5DB4 /* AppDelegate.swift in Sources */,
 				B01062DF2988031800AA5DB4 /* SceneDelegate.swift in Sources */,
+				B05F7419299BD9650035371D /* ExpensesDetailViewController.swift in Sources */,
 				B01062F429881AF800AA5DB4 /* MainViewController.swift in Sources */,
 				B01062F629896DFF00AA5DB4 /* SettingsViewController.swift in Sources */,
 				B091CD342990E6A0004938B9 /* ExpensesViewCell.swift in Sources */,

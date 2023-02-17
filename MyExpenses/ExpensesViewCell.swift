@@ -9,17 +9,14 @@ import UIKit
 import SnapKit
 
 class ExpensesViewCell: UITableViewCell {
-    
     static let identifier = "ExpensesViewCell"
-    
     var nameLabel = UILabel()
-    
     var coastLabel = UILabel()
+    var typeLabel = UILabel()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         makeForm()
-        
     }
     
     required init?(coder: NSCoder) {
@@ -28,7 +25,7 @@ class ExpensesViewCell: UITableViewCell {
     
     private func makeForm() {
         let stack = UIStackView(arrangedSubviews: [
-            nameLabel, coastLabel
+            nameLabel, typeLabel, coastLabel
         ])
         
         stack.axis = .horizontal
@@ -38,7 +35,7 @@ class ExpensesViewCell: UITableViewCell {
         
         stack.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(5)
-            make.leading.equalToSuperview().offset(10)
+            make.leading.trailing.equalToSuperview().inset(10)
         }
     }
 
