@@ -16,8 +16,6 @@ struct Expenses {
     var color: UIColor
 }
 
-private let reuseIdentifier = "cell"
-
 class MainViewController: UITableViewController {
     var expenses = [Expenses?] ()
     var delegate: sendExpensesProtocol?
@@ -32,7 +30,10 @@ class MainViewController: UITableViewController {
         tableView.delegate = self
         tableView.dataSource = self
         configureEmptyLabel()
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .done, target: self, action: #selector(plusBtnClick))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"),
+                                                            style: .done,
+                                                            target: self,
+                                                            action: #selector(plusBtnClick))
     }
     
     private func configureEmptyLabel() {
