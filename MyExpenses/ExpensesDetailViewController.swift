@@ -61,6 +61,4 @@ extension ExpensesDetailViewController: sendExpensesProtocol {
         self.coastLabel.text = expenses.coast
         self.typeLabel.text = expenses.type
     }
-    
-    
 }

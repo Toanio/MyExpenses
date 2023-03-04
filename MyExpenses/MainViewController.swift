@@ -27,26 +27,31 @@ class MainViewController: UITableViewController {
         super.viewDidLoad()
         tableView.register(ExpensesViewCell.self, forCellReuseIdentifier: ExpensesViewCell.identifier)
         tableView.register(TotalExpensesFooterView.self, forHeaderFooterViewReuseIdentifier: TotalExpensesFooterView.identifier)
+        configureEmptyLabel()
         tableView.delegate = self
         tableView.dataSource = self
-        configureEmptyLabel()
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"),
                                                             style: .done,
                                                             target: self,
                                                             action: #selector(plusBtnClick))
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateEmptyLabel()
+    }
+    
     private func configureEmptyLabel() {
         view.addSubview(emptyLabel)
-        if expenses.isEmpty {
-            emptyLabel.text = "Трат не было"
-        } else {
-            emptyLabel.isHidden = true
-        }
+        emptyLabel.text = "Трат не было"
         emptyLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.centerY.equalToSuperview()
         }
+    }
+    
+    private func updateEmptyLabel() {
+        emptyLabel.isHidden = !expenses.isEmpty
     }
     
     //MARK: - Actions
@@ -99,12 +104,19 @@ extension MainViewController {
             tableView.beginUpdates()
             expenses.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
+            updateEmptyLabel()
             tableView.endUpdates()
         }
     }
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: TotalExpensesFooterView.identifier) as! TotalExpensesFooterView
-        cell.sumExpensesLabel.text = "50"
+        var res = 0
+        expenses.forEach { exp in
+            if let exp = exp?.coast {
+                res += Int(exp)!
+            }
+        }
+        cell.sumExpensesLabel.text = String(res)
         return cell
     }
 }

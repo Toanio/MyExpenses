@@ -27,16 +27,12 @@ class ExpensesViewCell: UITableViewCell {
         let stack = UIStackView(arrangedSubviews: [
             nameLabel, typeLabel, coastLabel
         ])
-        
         stack.axis = .horizontal
         stack.spacing = 5
-        
         contentView.addSubview(stack)
-        
         stack.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(5)
             make.leading.trailing.equalToSuperview().inset(10)
         }
     }
-
 }
