@@ -7,17 +7,11 @@
 
 import UIKit
 protocol sendExpensesProtocol {
-    func sendExpenses(expenses: Expenses)
-}
-struct Expenses {
-    var name: String
-    var coast: String
-    var type: String
-    var color: UIColor
+    func sendExpenses(expenses: ExpensesData)
 }
 
 class MainViewController: UITableViewController {
-    var expenses = [Expenses?] ()
+    var expenses = [ExpensesData?] ()
     var delegate: sendExpensesProtocol?
     lazy var emptyLabel: UILabel = {
         let label = UILabel()
@@ -27,6 +21,7 @@ class MainViewController: UITableViewController {
         super.viewDidLoad()
         tableView.register(ExpensesViewCell.self, forCellReuseIdentifier: ExpensesViewCell.identifier)
         tableView.register(TotalExpensesFooterView.self, forHeaderFooterViewReuseIdentifier: TotalExpensesFooterView.identifier)
+        fetchExpensesFromStorage()
         configureEmptyLabel()
         tableView.delegate = self
         tableView.dataSource = self
@@ -38,6 +33,7 @@ class MainViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        fetchExpensesFromStorage() //Обновить таблицу?
         updateEmptyLabel()
     }
     
@@ -54,6 +50,10 @@ class MainViewController: UITableViewController {
         emptyLabel.isHidden = !expenses.isEmpty
     }
     
+    private func fetchExpensesFromStorage() {
+        expenses = CoreDataManager.shared.fetchNotes()
+    }
+    
     //MARK: - Actions
     
     @objc func plusBtnClick() {
@@ -64,9 +64,9 @@ class MainViewController: UITableViewController {
 }
 
 extension MainViewController: AddExpensesDelegate {
-    func addExpenses(expenses: Expenses) {
+    func addExpenses() {
         self.dismiss(animated: true) {
-            self.expenses.append(expenses)
+            //self.expenses.append(expenses)
             self.tableView.reloadData()
         }
     }
@@ -83,7 +83,7 @@ extension MainViewController {
         cell.nameLabel.text = expenses[indexPath.row]?.name
         cell.coastLabel.text = expenses[indexPath.row]?.coast
         cell.typeLabel.text = expenses[indexPath.row]?.type
-        cell.typeLabel.backgroundColor = expenses[indexPath.row]?.color
+        //cell.typeLabel.backgroundColor = expenses[indexPath.row]?.color
         return cell
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -102,12 +102,16 @@ extension MainViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             tableView.beginUpdates()
-            expenses.remove(at: indexPath.row)
+            guard let deleteExpenses = expenses.remove(at: indexPath.row) else { return }
+            CoreDataManager.shared.delete(deleteExpenses)
             tableView.deleteRows(at: [indexPath], with: .fade)
             updateEmptyLabel()
             tableView.endUpdates()
         }
     }
+    
+    //Создание Итого
+    
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: TotalExpensesFooterView.identifier) as! TotalExpensesFooterView
         var res = 0

@@ -7,9 +7,10 @@
 
 import UIKit
 import SnapKit
+import CoreData
 
 protocol AddExpensesDelegate {
-    func addExpenses(expenses: Expenses)
+    func addExpenses()
 }
 
 enum TypeExpenses: Int, CaseIterable {
@@ -137,15 +138,21 @@ class NewExpensesViewController: UIViewController  {
     @objc func doneBtnClick() {
         guard let name = expensesTextField.text, expensesTextField.hasText,
               let coast = coastTextField.text, coastTextField.hasText,
-              let color = typeButton.backgroundColor,
+              //let color = typeButton.backgroundColor,
               let description = typeButton.titleLabel?.text
         else {
             coastTextField.layer.borderColor = CGColor(red: 255, green: 0, blue: 0, alpha: 1)
             expensesTextField.layer.borderColor = CGColor(red: 255, green: 0, blue: 0, alpha: 1)
             return
         }
-        let expenses = Expenses(name: name, coast: coast, type: description, color: color)
-        delegate?.addExpenses(expenses: expenses)
+        let expenses = ExpensesData(context: CoreDataManager.shared.viewContext)
+        expenses.name = name
+        expenses.coast = coast
+        expenses.type = description
+        expenses.lastUpdated = Date()
+        CoreDataManager.shared.save()
+        //let expenses = Expenses(name: name, coast: coast, type: description, color: color)
+        delegate?.addExpenses()
         navigationController?.popViewController(animated: true)
     }
     
@@ -212,4 +219,18 @@ extension NewExpensesViewController: UITableViewDelegate, UITableViewDataSource 
         }
         tableView.deleteRows(at: indexPaths, with: .fade)
     }
+}
+extension CoreDataManager {
+    func fetchNotes() -> [ExpensesData] {
+        let request: NSFetchRequest<ExpensesData> = ExpensesData.fetchRequest()
+        let sortDescriptior = NSSortDescriptor(keyPath: \ExpensesData.lastUpdated, ascending: false)
+        request.sortDescriptors = [sortDescriptior]
+        return try! viewContext.fetch(request) 
+    }
+    
+    func delete(_ expenses: ExpensesData) {
+        viewContext.delete(expenses)
+        CoreDataManager.shared.save()
+    }
+    
 }

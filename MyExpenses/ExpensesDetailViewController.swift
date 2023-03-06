@@ -8,7 +8,7 @@
 import UIKit
 
 class ExpensesDetailViewController: UIViewController {
-    var expenses = [Expenses?]()
+    var expenses = [ExpensesData?]()
     lazy var coastLabel = UILabel()
     lazy var typeLabel = UILabel()
     lazy var nameExpensesLabel: UILabel = {
@@ -56,7 +56,7 @@ class ExpensesDetailViewController: UIViewController {
 }
 
 extension ExpensesDetailViewController: sendExpensesProtocol {
-    func sendExpenses(expenses: Expenses) {
+    func sendExpenses(expenses: ExpensesData) {
         self.nameExpensesLabel.text = expenses.name
         self.coastLabel.text = expenses.coast
         self.typeLabel.text = expenses.type
