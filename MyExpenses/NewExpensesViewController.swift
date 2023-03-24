@@ -37,8 +37,6 @@ enum TypeExpenses: Int, CaseIterable {
 
 class NewExpensesViewController: UIViewController  {
     var showMenu = false
-    var delegate: AddExpensesDelegate?
-    
     lazy var mainLabel: UILabel = {
         let label = UILabel()
         label.text = "Название расхода"
@@ -151,8 +149,6 @@ class NewExpensesViewController: UIViewController  {
         expenses.type = description
         expenses.lastUpdated = Date()
         CoreDataManager.shared.save()
-        //let expenses = Expenses(name: name, coast: coast, type: description, color: color)
-        delegate?.addExpenses()
         navigationController?.popViewController(animated: true)
     }
     
