@@ -11,7 +11,7 @@ protocol sendExpensesProtocol {
 }
 
 class MainViewController: UITableViewController {
-    var expenses = [ExpensesData?] ()
+    private let mainViewPresenter = MainViewPresenter()
     var delegate: sendExpensesProtocol?
     lazy var emptyLabel: UILabel = {
         let label = UILabel()
@@ -21,7 +21,7 @@ class MainViewController: UITableViewController {
         super.viewDidLoad()
         tableView.register(ExpensesViewCell.self, forCellReuseIdentifier: ExpensesViewCell.identifier)
         tableView.register(TotalExpensesFooterView.self, forHeaderFooterViewReuseIdentifier: TotalExpensesFooterView.identifier)
-        fetchExpensesFromStorage()
+        mainViewPresenter.fetchExpensesFromStorage()
         configureEmptyLabel()
         tableView.delegate = self
         tableView.dataSource = self
@@ -33,7 +33,8 @@ class MainViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fetchExpensesFromStorage() //Обновить таблицу?
+        mainViewPresenter.fetchExpensesFromStorage()
+        tableView.reloadData() //Обновить таблицу?
         updateEmptyLabel()
     }
     
@@ -47,12 +48,10 @@ class MainViewController: UITableViewController {
     }
     
     private func updateEmptyLabel() {
-        emptyLabel.isHidden = !expenses.isEmpty
+        emptyLabel.isHidden = !mainViewPresenter.expenses.isEmpty
     }
     
-    private func fetchExpensesFromStorage() {
-        expenses = CoreDataManager.shared.fetchNotes()
-    }
+
     
     //MARK: - Actions
     
@@ -76,20 +75,20 @@ extension MainViewController: AddExpensesDelegate {
 
 extension MainViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return expenses.count
+        return mainViewPresenter.expenses.count
     }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ExpensesViewCell.identifier, for: indexPath) as? ExpensesViewCell else { return UITableViewCell() }
-        cell.nameLabel.text = expenses[indexPath.row]?.name
-        cell.coastLabel.text = expenses[indexPath.row]?.coast
-        cell.typeLabel.text = expenses[indexPath.row]?.type
+        cell.nameLabel.text = mainViewPresenter.expenses[indexPath.row]?.name
+        cell.coastLabel.text = mainViewPresenter.expenses[indexPath.row]?.coast
+        cell.typeLabel.text = mainViewPresenter.expenses[indexPath.row]?.type
         //cell.typeLabel.backgroundColor = expenses[indexPath.row]?.color
         return cell
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = ExpensesDetailViewController()
         delegate = vc
-        guard let expens = expenses[indexPath.row] else { return }
+        guard let expens = mainViewPresenter.expenses[indexPath.row] else { return }
         delegate?.sendExpenses(expenses: expens)
         navigationController?.pushViewController(vc, animated: true)
     }
@@ -101,12 +100,9 @@ extension MainViewController {
     }
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            tableView.beginUpdates()
-            guard let deleteExpenses = expenses.remove(at: indexPath.row) else { return }
-            CoreDataManager.shared.delete(deleteExpenses)
+            mainViewPresenter.removeElement(indexPath: indexPath)
             tableView.deleteRows(at: [indexPath], with: .fade)
             updateEmptyLabel()
-            tableView.endUpdates()
         }
     }
     
@@ -114,13 +110,7 @@ extension MainViewController {
     
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: TotalExpensesFooterView.identifier) as! TotalExpensesFooterView
-        var res = 0
-        expenses.forEach { exp in
-            if let exp = exp?.coast {
-                res += Int(exp)!
-            }
-        }
-        cell.sumExpensesLabel.text = String(res)
+        cell.sumExpensesLabel.text = String(mainViewPresenter.calculateTotalExpenses())
         return cell
     }
 }

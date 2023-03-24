@@ -19,7 +19,7 @@ class ViewController: UITabBarController {
         
         viewControllers = [
             createNavController(viewController: MainViewController(), title: "Главная"),
-            createNavController(viewController: SettingsViewController(), title: "Настройки")
+            createNavController(viewController: ChartsViewController(), title: "График расходов")
         ]
        
     

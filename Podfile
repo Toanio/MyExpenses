@@ -6,5 +6,5 @@ target 'MyExpenses' do
   use_frameworks!
   # Pods for MyExpenses
 pod 'SnapKit', '~> 5.0.0'
-
+pod 'Charts', '~> 4.1'
 end
