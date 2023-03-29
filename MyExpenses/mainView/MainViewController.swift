@@ -70,7 +70,7 @@ extension MainViewController {
         cell.nameLabel.text = presenter.expenses[indexPath.row]?.name
         cell.coastLabel.text = presenter.expenses[indexPath.row]?.coast
         cell.typeLabel.text = presenter.expenses[indexPath.row]?.type
-        //cell.typeLabel.backgroundColor = expenses[indexPath.row]?.color
+        cell.typeLabel.backgroundColor = presenter.expenses[indexPath.row]?.typeColor
         return cell
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

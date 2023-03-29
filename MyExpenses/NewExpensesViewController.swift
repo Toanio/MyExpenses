@@ -136,7 +136,7 @@ class NewExpensesViewController: UIViewController  {
     @objc func doneBtnClick() {
         guard let name = expensesTextField.text, expensesTextField.hasText,
               let coast = coastTextField.text, coastTextField.hasText,
-              //let color = typeButton.backgroundColor,
+              let color = typeButton.backgroundColor,
               let description = typeButton.titleLabel?.text
         else {
             coastTextField.layer.borderColor = CGColor(red: 255, green: 0, blue: 0, alpha: 1)
@@ -147,6 +147,7 @@ class NewExpensesViewController: UIViewController  {
         expenses.name = name
         expenses.coast = coast
         expenses.type = description
+        expenses.typeColor = color
         expenses.lastUpdated = Date()
         CoreDataManager.shared.save()
         navigationController?.popViewController(animated: true)
