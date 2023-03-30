@@ -26,20 +26,13 @@ class ChartsViewController: UIViewController, ChartViewDelegate {
         pie.center = view.center
         view.addSubview(pie)
         
-
-        
         let enties = expenses.compactMap { $0.coast }
         let entriesValue = enties.compactMap { Double($0) }
-        let entries = entriesValue.compactMap { ChartDataEntry(x: $0, y: $0) }
-
-//        let entries: [ChartDataEntry] = [
-//            ChartDataEntry(x: entriesValue, y: entriesValue),
-//            ChartDataEntry(x: 213, y: 213),
-//            ChartDataEntry(x: 123, y: 123),
-//        ]
+        let entries = entriesValue.compactMap { PieChartDataEntry(value: Double($0)) }
         let set = PieChartDataSet(entries: entries)
-        set.colors = ChartColorTemplates.material()
+        set.colors = [UIColor.red, UIColor.gray, UIColor.blue]
         let data = PieChartData(dataSet: set)
         pie.data = data
+        
     }
 }
