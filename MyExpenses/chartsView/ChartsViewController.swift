@@ -9,8 +9,7 @@ import UIKit
 import Charts
 
 class ChartsViewController: UIViewController, ChartViewDelegate {
-    
-    var expenses = CoreDataManager.shared.fetchNotes()
+    private let presenter = ChartsViewPresenter()
     var pie = PieChartView()
     
     override func viewDidLoad() {
@@ -20,19 +19,15 @@ class ChartsViewController: UIViewController, ChartViewDelegate {
     
     override func viewDidLayoutSubviews(){
         super.viewDidLayoutSubviews()
+        configurePieCharts()
+    }
+    
+    func configurePieCharts() {
         pie.frame = CGRect(x: 0, y: 0,
                            width: self.view.frame.width,
                            height: self.view.frame.width)
         pie.center = view.center
         view.addSubview(pie)
-        
-        let enties = expenses.compactMap { $0.coast }
-        let entriesValue = enties.compactMap { Double($0) }
-        let entries = entriesValue.compactMap { PieChartDataEntry(value: Double($0)) }
-        let set = PieChartDataSet(entries: entries)
-        set.colors = [UIColor.red, UIColor.gray, UIColor.blue]
-        let data = PieChartData(dataSet: set)
-        pie.data = data
-        
+        pie.data = presenter.setData()
     }
 }

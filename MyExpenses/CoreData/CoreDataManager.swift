@@ -36,4 +36,15 @@ class CoreDataManager {
             }
         }
     }
+    func fetchNotes() -> [ExpensesData] {
+        let request: NSFetchRequest<ExpensesData> = ExpensesData.fetchRequest()
+        let sortDescriptior = NSSortDescriptor(keyPath: \ExpensesData.lastUpdated, ascending: false)
+        request.sortDescriptors = [sortDescriptior]
+        return try! viewContext.fetch(request)
+    }
+    
+    func delete(_ expenses: ExpensesData) {
+        viewContext.delete(expenses)
+        CoreDataManager.shared.save()
+    }
 }

@@ -9,34 +9,8 @@ import UIKit
 import SnapKit
 import CoreData
 
-protocol AddExpensesDelegate {
-    func addExpenses()
-}
-
-enum TypeExpenses: Int, CaseIterable {
-    case Food
-    case Entertaiment
-    case Sport
-    
-    var description: String {
-        switch self {
-        case .Food: return "Food"
-        case .Entertaiment: return "Entertaiment"
-        case .Sport: return "Sport"
-        }
-    }
-    
-    var color: UIColor {
-        switch self {
-        case .Food: return UIColor.red
-        case .Entertaiment: return UIColor.magenta
-        case .Sport: return UIColor.green
-        }
-    }
-}
-
-class NewExpensesViewController: UIViewController  {
-    var showMenu = false
+class NewExpensesViewController: UIViewController {
+    private let presenter: NewExpensesPresenterProtocol = NewExpensesPresenter()
     lazy var mainLabel: UILabel = {
         let label = UILabel()
         label.text = "Название расхода"
@@ -77,7 +51,7 @@ class NewExpensesViewController: UIViewController  {
     lazy var typeButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = .darkGray
-        button.addTarget(self, action: #selector(someMethod), for: .touchUpInside)
+        button.addTarget(self, action: #selector(showTypeMenu), for: .touchUpInside)
         button.setTitle("Выбор типа", for: .normal)
         return button
     }()
@@ -90,7 +64,6 @@ class NewExpensesViewController: UIViewController  {
         
         configureTextFields()
         configureTableView()
-        
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneBtnClick))
         
@@ -153,16 +126,10 @@ class NewExpensesViewController: UIViewController  {
         navigationController?.popViewController(animated: true)
     }
     
-    @objc func someMethod() {
-        showMenu = !showMenu
-        var indexPaths = [IndexPath]()
-        
-        TypeExpenses.allCases.forEach { (color) in
-            let indexPath = IndexPath(row: color.rawValue, section: 0)
-            indexPaths.append(indexPath)
-        }
-        
-        if showMenu {
+    @objc func showTypeMenu() {
+        presenter.changeShowMenu()
+        let indexPaths = presenter.menuValues()
+        if presenter.showMenu {
             tableView.insertRows(at: indexPaths, with: .fade)
         } else {
             tableView.deleteRows(at: indexPaths, with: .fade)
@@ -192,7 +159,7 @@ extension NewExpensesViewController: UITextFieldDelegate {
 
 extension NewExpensesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return showMenu ? TypeExpenses.allCases.count : 0
+        return presenter.showMenu ? TypeExpenses.allCases.count : 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -207,27 +174,8 @@ extension NewExpensesViewController: UITableViewDelegate, UITableViewDataSource 
         let expens = TypeExpenses(rawValue: indexPath.row)
         typeButton.setTitle(expens?.description, for: .normal)
         typeButton.backgroundColor = expens?.color
-        showMenu = false
-        var indexPaths = [IndexPath]()
-
-        TypeExpenses.allCases.forEach { (color) in
-            let indexPath = IndexPath(row: color.rawValue, section: 0)
-            indexPaths.append(indexPath)
-        }
+        presenter.changeShowMenu()
+        let indexPaths = presenter.menuValues()
         tableView.deleteRows(at: indexPaths, with: .fade)
     }
-}
-extension CoreDataManager {
-    func fetchNotes() -> [ExpensesData] {
-        let request: NSFetchRequest<ExpensesData> = ExpensesData.fetchRequest()
-        let sortDescriptior = NSSortDescriptor(keyPath: \ExpensesData.lastUpdated, ascending: false)
-        request.sortDescriptors = [sortDescriptior]
-        return try! viewContext.fetch(request) 
-    }
-    
-    func delete(_ expenses: ExpensesData) {
-        viewContext.delete(expenses)
-        CoreDataManager.shared.save()
-    }
-    
 }
