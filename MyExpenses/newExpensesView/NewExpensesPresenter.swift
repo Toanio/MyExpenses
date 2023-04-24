@@ -18,6 +18,7 @@ class NewExpensesPresenter: NewExpensesPresenterProtocol {
     func changeShowMenu() {
         showMenu = !showMenu
     }
+    
     func menuValues() -> [IndexPath] {
         var indexPaths = [IndexPath]()
         

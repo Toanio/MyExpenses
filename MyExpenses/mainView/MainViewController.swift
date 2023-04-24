@@ -17,6 +17,7 @@ class MainViewController: UITableViewController {
         let label = UILabel()
         return label
     }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(ExpensesViewCell.self, forCellReuseIdentifier: ExpensesViewCell.identifier)
@@ -34,7 +35,7 @@ class MainViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         presenter.fetchExpensesFromStorage()
-        tableView.reloadData() //Обновить таблицу?
+        tableView.reloadData()
         updateEmptyLabel()
     }
     
@@ -62,9 +63,11 @@ class MainViewController: UITableViewController {
 //MARK: - Configure Table View
 
 extension MainViewController {
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return presenter.expenses.count
     }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ExpensesViewCell.identifier, for: indexPath) as? ExpensesViewCell else { return UITableViewCell() }
         cell.nameLabel.text = presenter.expenses[indexPath.row]?.name
@@ -73,6 +76,7 @@ extension MainViewController {
         cell.typeLabel.backgroundColor = presenter.expenses[indexPath.row]?.typeColor
         return cell
     }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = ExpensesDetailViewController()
         delegate = vc
@@ -86,6 +90,7 @@ extension MainViewController {
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return .delete
     }
+    
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             presenter.removeElement(indexPath: indexPath)

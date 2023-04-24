@@ -59,9 +59,7 @@ class NewExpensesViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         view.backgroundColor = .systemBackground
-        
         configureTextFields()
         configureTableView()
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")

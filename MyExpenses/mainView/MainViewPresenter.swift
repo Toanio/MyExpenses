@@ -9,6 +9,7 @@ import Foundation
 
 class MainViewPresenter {
     var expenses = [ExpensesData?] ()
+    
     func fetchExpensesFromStorage() {
         expenses = CoreDataManager.shared.fetchNotes()
     }
@@ -19,12 +20,12 @@ class MainViewPresenter {
     }
     
     func calculateTotalExpenses()-> Int {
-    var res = 0
+       var res = 0
        expenses.forEach { exp in
            if let exp = exp?.coast {
                res += Int(exp)!
            }
        }
-    return res
+       return res
    }
 }
