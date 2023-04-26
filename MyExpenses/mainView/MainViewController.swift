@@ -95,6 +95,7 @@ extension MainViewController {
         if editingStyle == .delete {
             presenter.removeElement(indexPath: indexPath)
             tableView.deleteRows(at: [indexPath], with: .fade)
+            tableView.reloadData()
             updateEmptyLabel()
         }
     }
