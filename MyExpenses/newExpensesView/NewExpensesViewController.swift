@@ -52,7 +52,7 @@ class NewExpensesViewController: UIViewController {
         let button = UIButton(type: .system)
         button.backgroundColor = .darkGray
         button.addTarget(self, action: #selector(showTypeMenu), for: .touchUpInside)
-        button.setTitle("Выбор типа", for: .normal)
+        button.setTitle("Select type", for: .normal)
         return button
     }()
     lazy var tableView: UITableView = UITableView()
