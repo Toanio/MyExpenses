@@ -19,13 +19,19 @@ class MainViewPresenter {
         CoreDataManager.shared.delete(deleteExpenses)
     }
     
-    func calculateTotalExpenses()-> Int {
-       var res = 0
-       expenses.forEach { exp in
-           if let exp = exp?.coast {
-               res += Int(exp)!
-           }
-       }
-       return res
+    func calculateTotalExpenses()-> Double {
+//       var res = 0
+//       expenses.forEach { exp in
+//           if let exp = exp?.coast {
+//               res += Int(exp)!
+//           }
+//       }
+//       return res
+        let coast = expenses.compactMap { $0?.coast }
+        let doubleCoast = coast.compactMap {Double($0)}
+        let result = doubleCoast.reduce(0) { partialResult, result in
+            partialResult + result
+        }
+        return result
    }
 }
