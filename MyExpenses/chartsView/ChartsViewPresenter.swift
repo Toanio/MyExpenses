@@ -20,30 +20,22 @@ class ChartsViewPresenter {
         let redType = expenses.filter { $0.typeColor == .red }
         let redCoastString = redType.compactMap { $0.coast }
         let redCoast = redCoastString.compactMap { Double($0) }
-        let sumRedCoast = redCoast.reduce(0) { partialResult, value in
-            partialResult + value
-        }
+        let sumRedCoast = redCoast.reduce(0) { $0 + $1 }
         
         let greenType = expenses.filter { $0.typeColor == .green }
         let greenCoastString = greenType.compactMap { $0.coast }
         let greenCoast = greenCoastString.compactMap { Double($0) }
-        let sumGreenCoast = greenCoast.reduce(0) { partialResult, value in
-            partialResult + value
-        }
+        let sumGreenCoast = greenCoast.reduce(0) { $0 + $1 }
         
         let magentaType = expenses.filter { $0.typeColor == .magenta }
         let magentaCoastString = magentaType.compactMap { $0.coast }
         let magentaCoast = magentaCoastString.compactMap { Double($0) }
-        let sumMagentaCoast = magentaCoast.reduce(0) { partialResult, value in
-            partialResult + value
-        }
+        let sumMagentaCoast = magentaCoast.reduce(0) { $0 + $1 }
         
         let otherType = expenses.filter { $0.type == "Select type" }
         let otherTypeString = otherType.compactMap { $0.coast }
         let otherCoast = otherTypeString.compactMap { Double($0) }
-        let sumOtherCoast = otherCoast.reduce(0) { partialResult, value in
-            partialResult + value
-        }
+        let sumOtherCoast = otherCoast.reduce(0) { $0 + $1 }
         
         var entries: [PieChartDataEntry] = Array()
         entries.append(PieChartDataEntry(value: sumRedCoast, label: "Red Value"))
