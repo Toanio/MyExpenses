@@ -10,7 +10,7 @@ protocol sendExpensesProtocol {
     func sendExpenses(expenses: ExpensesData)
 }
 
-class MainViewController: UITableViewController, MainViewControllerProtocol {
+class MainViewController: UITableViewController {
     init(presenter: MainViewPresenterProtocol) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
@@ -89,7 +89,7 @@ extension MainViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = ExpensesDetailViewBuilder().create()
         guard let expens = presenter.expenses[indexPath.row] else { return }
-        vc.delegate = self  //MainViewController.delegate = vc
+        //vc.delegate = self  //MainViewController.delegate = vc
         vc.sendExpenses(expenses: expens)
         navigationController?.pushViewController(vc, animated: true)
     }

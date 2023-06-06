@@ -16,7 +16,6 @@ protocol MainViewPresenterProtocol {
 
 class MainViewPresenter: MainViewPresenterProtocol{
     var expenses = [ExpensesData?] ()
-    var vc: MainViewControllerProtocol?
     
     func fetchExpensesFromStorage() {
         expenses = CoreDataManager.shared.fetchNotes()

@@ -13,7 +13,6 @@ class MainViewBuilder: BuilderProtocol {
     func create() -> MainViewController {
         let presenter = MainViewPresenter()
         let viewController = MainViewController(presenter: presenter)
-        presenter.vc = viewController
         return viewController
     }
 }
