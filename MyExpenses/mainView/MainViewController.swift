@@ -10,10 +10,6 @@ protocol sendExpensesProtocol {
     func sendExpenses(expenses: ExpensesData)
 }
 
-protocol MainViewControllerProtocol {
-    
-}
-
 class MainViewController: UITableViewController, MainViewControllerProtocol {
     init(presenter: MainViewPresenterProtocol) {
         self.presenter = presenter
@@ -77,7 +73,6 @@ class MainViewController: UITableViewController, MainViewControllerProtocol {
 //MARK: - Configure Table View
 
 extension MainViewController {
-    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return presenter.expenses.count
     }
@@ -120,12 +115,6 @@ extension MainViewController {
         let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: TotalExpensesFooterView.identifier) as! TotalExpensesFooterView
         cell.sumExpensesLabel.text = String(presenter.calculateTotalExpenses())
         return cell
-    }
-}
-
-extension MainViewController: expensesChangedProtocol {
-    func sendNewExpenses(expenses: ExpensesData) {
-        //self.nameLabel.text =
     }
 }
 

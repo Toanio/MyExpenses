@@ -37,5 +37,4 @@ class TotalExpensesFooterView: UITableViewHeaderFooterView {
             make.leading.trailing.equalToSuperview().inset(10)
         }
     }
-    
 }

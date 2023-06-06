@@ -32,7 +32,6 @@ class MainViewPresenter: MainViewPresenterProtocol{
         let doubleCoast = coast.compactMap {Double($0)}
         let result = doubleCoast.reduce(0) { $0 + $1}
         return result
-   }
-    
+   }    
 }
 
