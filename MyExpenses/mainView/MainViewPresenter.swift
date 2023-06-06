@@ -7,8 +7,16 @@
 
 import Foundation
 
-class MainViewPresenter {
+protocol MainViewPresenterProtocol {
+    var expenses: [ExpensesData?] { get }
+    func fetchExpensesFromStorage()
+    func removeElement(indexPath: IndexPath)
+    func calculateTotalExpenses()-> Double
+}
+
+class MainViewPresenter: MainViewPresenterProtocol{
     var expenses = [ExpensesData?] ()
+    var vc: MainViewControllerProtocol?
     
     func fetchExpensesFromStorage() {
         expenses = CoreDataManager.shared.fetchNotes()
@@ -22,9 +30,9 @@ class MainViewPresenter {
     func calculateTotalExpenses()-> Double {
         let coast = expenses.compactMap { $0?.coast }
         let doubleCoast = coast.compactMap {Double($0)}
-        let result = doubleCoast.reduce(0) { partialResult, result in
-            partialResult + result
-        }
+        let result = doubleCoast.reduce(0) { $0 + $1}
         return result
    }
+    
 }
+

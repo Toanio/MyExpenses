@@ -10,7 +10,6 @@ import SnapKit
 
 class TotalExpensesFooterView: UITableViewHeaderFooterView {
     static let identifier = "TotalExpensesFooter"
-    //var expenses = [ExpensesData?]()
     lazy var totalLabel: UILabel = {
         let label = UILabel()
         label.text = "Итог: "

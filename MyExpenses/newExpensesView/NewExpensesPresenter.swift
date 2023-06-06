@@ -28,7 +28,5 @@ class NewExpensesPresenter: NewExpensesPresenterProtocol {
         }
         return indexPaths
     }
-    
-    func testFunc() {}
 }
 

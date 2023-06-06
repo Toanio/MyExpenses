@@ -10,8 +10,21 @@ protocol sendExpensesProtocol {
     func sendExpenses(expenses: ExpensesData)
 }
 
-class MainViewController: UITableViewController {
-    private let presenter = MainViewPresenter()
+protocol MainViewControllerProtocol {
+    
+}
+
+class MainViewController: UITableViewController, MainViewControllerProtocol {
+    init(presenter: MainViewPresenterProtocol) {
+        self.presenter = presenter
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private let presenter: MainViewPresenterProtocol
     var delegate: sendExpensesProtocol?
     lazy var emptyLabel: UILabel = {
         let label = UILabel()
@@ -55,7 +68,8 @@ class MainViewController: UITableViewController {
     //MARK: - Actions
     
     @objc func plusBtnClick() {
-        let vc = NewExpensesViewController()
+        let builder = NewExpensesBuilder()
+        let vc = builder.create()
         navigationController?.pushViewController(vc, animated: true)
     }
 }
@@ -78,10 +92,10 @@ extension MainViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = ExpensesDetailViewController()
-        delegate = vc
+        let vc = ExpensesDetailViewBuilder().create()
         guard let expens = presenter.expenses[indexPath.row] else { return }
-        delegate?.sendExpenses(expenses: expens)
+        vc.delegate = self  //MainViewController.delegate = vc
+        vc.sendExpenses(expenses: expens)
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -108,3 +122,10 @@ extension MainViewController {
         return cell
     }
 }
+
+extension MainViewController: expensesChangedProtocol {
+    func sendNewExpenses(expenses: ExpensesData) {
+        //self.nameLabel.text =
+    }
+}
+

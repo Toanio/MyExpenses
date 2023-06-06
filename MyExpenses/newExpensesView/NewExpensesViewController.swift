@@ -10,7 +10,16 @@ import SnapKit
 import CoreData
 
 class NewExpensesViewController: UIViewController {
-    private let presenter: NewExpensesPresenterProtocol = NewExpensesPresenter()
+    init(presenter: NewExpensesPresenterProtocol) {
+        self.presenter = presenter
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private let presenter: NewExpensesPresenterProtocol
     lazy var mainLabel: UILabel = {
         let label = UILabel()
         label.text = "Название расхода"
