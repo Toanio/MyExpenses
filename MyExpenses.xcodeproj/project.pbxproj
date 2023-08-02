@@ -95,14 +95,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		B00F952D2A7A6D3B00E30967 /* Resourses */ = {
+		B00F952D2A7A6D3B00E30967 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
 				B01062E82988032100AA5DB4 /* Assets.xcassets */,
 				B01062EA2988032100AA5DB4 /* LaunchScreen.storyboard */,
 				B01062ED2988032100AA5DB4 /* Info.plist */,
 			);
-			path = Resourses;
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		B00F952E2A7A6D4D00E30967 /* Application */ = {
@@ -154,7 +154,7 @@
 				B00F95302A7A6D7E00E30967 /* TotalExpensesFooter */,
 				B00F952F2A7A6D5C00E30967 /* TabBar */,
 				B00F952E2A7A6D4D00E30967 /* Application */,
-				B00F952D2A7A6D3B00E30967 /* Resourses */,
+				B00F952D2A7A6D3B00E30967 /* Resources */,
 				B05F742329B38ADD0035371D /* CoreData */,
 				B0F90A9C29C49A0B00E1E58B /* MainView */,
 				B011754D29D50985005ED3AB /* NewExpensesView */,
@@ -493,7 +493,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = MyExpenses/Info.plist;
+				INFOPLIST_FILE = MyExpenses/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -520,7 +520,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = MyExpenses/Info.plist;
+				INFOPLIST_FILE = MyExpenses/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
